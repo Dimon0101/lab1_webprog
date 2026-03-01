@@ -24,14 +24,11 @@ class LibraryFileManagerTest {
         manager = new LibraryFileManager();
     }
 
-    // ── Export ─────────────────────────────────────────────────────
-
     @Test
     @DisplayName("Записує CSV-заголовок першим рядком")
     void export_writesHeader() throws IOException {
         StringWriter sw = new StringWriter();
         manager.exportBooks(List.of(), null, new StringWriter());
-        // use spyWriter to confirm the header
         manager.exportBooks(List.of(), null, sw);
         assertTrue(sw.toString().startsWith(LibraryFileManager.CSV_HEADER));
     }
@@ -86,8 +83,6 @@ class LibraryFileManagerTest {
         assertEquals(LibraryFileManager.CSV_HEADER, sw.toString().trim());
     }
 
-    // ── Import ─────────────────────────────────────────────────────
-
     @Test
     @DisplayName("Соректний CSV → список книг з правильними полями")
     void import_valid() throws IOException {
@@ -126,8 +121,6 @@ class LibraryFileManagerTest {
         List<Book> books = manager.importBooks(new StringReader(""));
         assertTrue(books.isEmpty());
     }
-
-    // ── Round-trip ─────────────────────────────────────────────────
 
     @Test
     @DisplayName("export → import відтворює ті ж книги")

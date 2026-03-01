@@ -18,8 +18,6 @@ class ReaderTest {
         book   = new Book(10, "Кобзар", "Шевченко");
     }
 
-    // ── borrowBook ─────────────────────────────────────────────────
-
     @Test
     @DisplayName("Книга додається до списку")
     void borrowBook_success() {
@@ -40,8 +38,6 @@ class ReaderTest {
         assertThrows(IllegalStateException.class, () -> reader.borrowBook(book));
     }
 
-    // ── returnBook ─────────────────────────────────────────────────
-
     @Test
     @DisplayName("Книга є у списку → видаляється, повертає true")
     void returnBook_success() {
@@ -55,8 +51,6 @@ class ReaderTest {
     void returnBook_absent() {
         assertFalse(reader.returnBook(book));
     }
-
-    // ── hasBorrowedBook ────────────────────────────────────────────
 
     @Test
     @DisplayName("Книга є → true")
@@ -78,8 +72,6 @@ class ReaderTest {
         assertThrows(UnsupportedOperationException.class,
                 () -> reader.getBorrowedBooks().remove(0));
     }
-
-    // ── equals / hashCode ──────────────────────────────────────────
 
     @Test
     @DisplayName("Однакові читачі — рівні")

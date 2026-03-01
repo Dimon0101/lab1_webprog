@@ -25,14 +25,14 @@ public class ConsoleMenu {
                 case 6  -> actionImport();
                 case 7  -> displayState();
                 case 0  -> running = false;
-                default -> println("  [!] Невідома команда.\n");
+                default -> println("Невідома команда.\n");
             }
         }
         println("До побачення!");
     }
 
     private void menuBooks() {
-        println("\n── Управління книгами ──");
+        println("\nУправління книгами");
         println("  1. Додати книгу");
         println("  2. Видалити книгу");
         println("  3. Показати всі книги");
@@ -62,18 +62,18 @@ public class ConsoleMenu {
         String title  = readString("  Назва    : ");
         String author = readString("  Автор    : ");
         if (library.addBook(new Book(id, title, author))) {
-            println("  [✓] Книгу додано.");
+            println("Книгу додано.");
         } else {
-            println("  [✗] Книга з таким ID вже існує.");
+            println("Книга з таким ID вже існує.");
         }
     }
 
     private void actionRemoveBook() {
         int id = readInt("  ID книги для видалення: ");
         if (library.removeBook(id)) {
-            println("  [✓] Книгу видалено.");
+            println("Книгу видалено.");
         } else {
-            println("  [✗] Не вдалося видалити: книга не знайдена або зараз видана читачеві.");
+            println("Не вдалося видалити: книга не знайдена або зараз видана читачеві.");
         }
     }
 
@@ -89,18 +89,18 @@ public class ConsoleMenu {
         int    id   = readInt("  ID читача : ");
         String name = readString("  Ім'я      : ");
         if (library.registerReader(new Reader(id, name))) {
-            println("  [✓] Читача зареєстровано.");
+            println("Читача зареєстровано.");
         } else {
-            println("  [✗] Читач з таким ID вже існує.");
+            println("Читач з таким ID вже існує.");
         }
     }
 
     private void actionRemoveReader() {
         int id = readInt("  ID читача для видалення: ");
         if (library.removeReader(id)) {
-            println("  [✓] Читача видалено.");
+            println("Читача видалено.");
         } else {
-            println("  [✗] Не вдалося видалити: читач не знайдений або ще має книги.");
+            println("Не вдалося видалити: читач не знайдений або ще має книги.");
         }
     }
 
@@ -113,31 +113,31 @@ public class ConsoleMenu {
     }
 
     private void actionBorrow() {
-        println("\n── Видача книги ──");
+        println("Видача книги");
         int bookId   = readInt("  ID книги   : ");
         int readerId = readInt("  ID читача  : ");
         switch (library.borrowBook(bookId, readerId)) {
-            case SUCCESS          -> println("  [✓] Книгу видано читачеві.");
-            case NOT_FOUND        -> println("  [✗] Книгу або читача не знайдено.");
-            case ALREADY_BORROWED -> println("  [✗] Книга вже видана іншому читачеві.");
+            case SUCCESS          -> println("  Книгу видано читачеві.");
+            case NOT_FOUND        -> println("  Книгу або читача не знайдено.");
+            case ALREADY_BORROWED -> println("  Книга вже видана іншому читачеві.");
         }
     }
 
     private void actionReturn() {
-        println("\n── Повернення книги ──");
+        println("Повернення книги");
         int readerId = readInt("  ID читача  : ");
         int bookId   = readInt("  ID книги   : ");
         switch (library.returnBook(readerId, bookId)) {
-            case SUCCESS                -> println("  [✓] Книгу повернено до бібліотеки.");
-            case NOT_FOUND              -> println("  [✗] Книгу або читача не знайдено.");
-            case NOT_BORROWED_BY_READER -> println("  [✗] Цей читач не брав дану книгу.");
+            case SUCCESS                -> println(" Книгу повернено до бібліотеки.");
+            case NOT_FOUND              -> println(" Книгу або читача не знайдено.");
+            case NOT_BORROWED_BY_READER -> println(" Цей читач не брав дану книгу.");
         }
     }
 
     private void actionExport() {
-        println("\n── Експорт книг у CSV ──");
-        println("  Сортування:");
-        println("    1 — за назвою   2 — за автором   3 — за ID   0 — без сортування");
+        println("\nЕкспорт книг у CSV");
+        println("Сортування:");
+        println(" 1 — за назвою   2 — за автором   3 — за ID   0 — без сортування");
         int sort = readInt("  Вибір: ");
 
         var cmp = switch (sort) {
@@ -147,34 +147,34 @@ public class ConsoleMenu {
             default -> null;
         };
 
-        String path = readString("  Шлях до файлу (напр. books.csv): ");
+        String path = readString("Шлях до файлу (напр. books.csv): ");
         List<Book> books = new ArrayList<>(library.getAllBooks());
         try {
             fileManager.exportBooksToFile(books, cmp, path);
-            println("  [✓] Експортовано " + books.size() + " книг → " + path);
+            println("Експортовано " + books.size() + " книг → " + path);
         } catch (IOException e) {
-            println("  [✗] Помилка запису: " + e.getMessage());
+            println("Помилка запису: " + e.getMessage());
         }
     }
 
     private void actionImport() {
-        println("\n── Імпорт книг з CSV ──");
-        String path = readString("  Шлях до файлу (напр. books.csv): ");
+        println("\nІмпорт книг з CSV");
+        String path = readString("Шлях до файлу (напр. books.csv): ");
         try {
             List<Book> imported = fileManager.importBooksFromFile(path);
             int added = 0;
             for (Book b : imported) {
                 if (library.addBook(b)) added++;
             }
-            println(String.format("  [✓] Прочитано %d рядків; додано %d нових книг (дублікатів: %d).",
+            println(String.format("Прочитано %d рядків; додано %d нових книг (дублікатів: %d).",
                     imported.size(), added, imported.size() - added));
         } catch (IOException e) {
-            println("  [✗] Помилка читання: " + e.getMessage());
+            println("Помилка читання: " + e.getMessage());
         }
     }
 
     private void displayState() {
-        println("\n═══════════ Стан бібліотеки ═══════════");
+        println("\nСтан бібліотеки");
         println("Книги:");
         var books = library.getAllBooks();
         if (books.isEmpty()) println("  (немає)");
@@ -184,11 +184,10 @@ public class ConsoleMenu {
         var readers = library.getAllReaders();
         if (readers.isEmpty()) println("  (немає)");
         else readers.forEach(r -> println("  " + r));
-        println("═══════════════════════════════════════\n");
     }
 
     private void printMainMenu() {
-        println("\n──────────── Головне меню ────────────");
+        println("\nГоловне меню ");
         println("  1. Управління книгами");
         println("  2. Управління читачами");
         println("  3. Видати книгу читачеві");
@@ -197,7 +196,6 @@ public class ConsoleMenu {
         println("  6. Імпортувати книги з CSV");
         println("  7. Показати стан бібліотеки");
         println("  0. Вихід");
-        println("──────────────────────────────────────");
     }
 
     private int readInt(String prompt) {
@@ -206,7 +204,7 @@ public class ConsoleMenu {
             try {
                 return Integer.parseInt(sc.nextLine().trim());
             } catch (NumberFormatException e) {
-                println("  [!] Будь ласка, введіть ціле число.");
+                println("Будь ласка, введіть ціле число.");
             }
         }
     }
